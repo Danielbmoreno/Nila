@@ -26,7 +26,16 @@ export const horaMagicaCierre = 'Gracias por cruzarte con el mío.';
    texto: pie de foto corto (opcional).
    Mientras la lista esté vacía, la galería no se muestra.
    -------------------------------------------------------------------------- */
-export const fotos = [];
+export const fotos = [
+  { id: 'stefi-01', w: 1200, h: 1600, texto: '' },
+  { id: 'stefi-02', w: 1600, h: 1200, texto: 'A la hora mágica.' },
+  { id: 'stefi-03', w: 1200, h: 1600, texto: '' },
+  { id: 'stefi-04', w: 1296, h: 972, texto: 'Nuestras rutas.' },
+  { id: 'stefi-05', w: 900, h: 1600, texto: 'Contigo, hasta lo más simple.' },
+  { id: 'stefi-06', w: 1200, h: 1600, texto: '' },
+  { id: 'stefi-07', w: 1296, h: 972, texto: '' },
+  { id: 'stefi-08', w: 1296, h: 972, texto: '' },
+];
 
 /* --------------------------------------------------------------------------
    MÚSICA — RADWIMPS · 君の名は。 Your Name. (2016)
