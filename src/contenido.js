@@ -58,13 +58,12 @@ export const canciones = [
 ];
 
 /* --------------------------------------------------------------------------
-   GUIÑOS — frases propias inspiradas en cada mundo (no son citas).
+   GUIÑOS — los mundos que le gustan a Stefi. Frases propias, no son citas.
    -------------------------------------------------------------------------- */
 export const guinos = [
-  { obra: 'Your Name.', marca: '結び', texto: 'Musubi: el hilo que une a las personas, aunque estén lejos.' },
-  { obra: 'Mushoku Tensei', marca: '魔術', texto: 'Que tu nuevo mundo venga lleno de magia por aprender.' },
-  { obra: 'Nanatsu no Taizai', marca: '七', texto: 'Te encontraría en cualquier reino.' },
-  { obra: 'Solo Leveling', marca: 'SYSTEM', sistema: ['[ Nivel 18 alcanzado ]', 'Todas tus estadísticas han aumentado.'] },
+  { obra: 'Your Name.', marca: '結び', lang: 'ja', texto: 'Musubi: el hilo que une a las personas, aunque estén lejos.' },
+  { obra: 'Nanatsu no Taizai', marca: '七', lang: 'ja', texto: 'Te encontraría en cualquier reino.' },
+  { obra: 'Bon Appétit, Your Majesty', marca: '폭군의 셰프', lang: 'ko', texto: 'Para la majestad de esta historia: que nunca te falte tu comida favorita, ni alguien con quien compartirla.' },
 ];
 
 /* --------------------------------------------------------------------------
@@ -81,8 +80,8 @@ export const carta = {
     'Tengo muchas ganas de todo lo que viene: de los lugares que todavía no conocemos, de las canciones que nos van a recordar este año, de las fotos que aún no nos hemos tomado y de las tardes enteras hablando de cualquier cosa.',
     'Feliz cumpleaños, mi amor. Gracias por existir y por dejarme quererte.',
   ],
-  despedida: 'Con todo mi amor,',
-  firma: 'Datoy',
+  despedida: 'Con todo mi cariño,',
+  firma: 'Dato',
 };
 
 export const cierre = {

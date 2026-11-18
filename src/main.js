@@ -1,6 +1,6 @@
 import './style.css';
 import { portada, horaMagica, horaMagicaCierre, fotos, guinos, carta, cierre } from './contenido.js';
-import { iniciarMusica } from './musica.js';
+import { iniciarMusica, sonarAhora } from './musica.js';
 
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
@@ -232,7 +232,7 @@ iniciarMusica();
 /* ================================================================ GUIÑOS */
 $('#guinos').innerHTML = guinos.map((g, i) => `
   <li class="guino revela g-${i}" style="--i:${i}">
-    <span class="g-marca" ${/^[A-Z]/.test(g.marca) ? '' : 'lang="ja"'} aria-hidden="true">${esc(g.marca)}</span>
+    <span class="g-marca"${g.lang ? ` lang="${g.lang}"` : ''} aria-hidden="true">${esc(g.marca)}</span>
     ${g.sistema
       ? `<div class="sistema" role="img" aria-label="${esc(g.sistema.join(' '))}">${g.sistema.map((l, j) => `<p${j === 0 ? ' class="sis-titulo"' : ''}>${esc(l)}</p>`).join('')}</div>`
       : `<p class="g-texto">${esc(g.texto)}</p>`}
@@ -283,7 +283,24 @@ const ioEscena = new IntersectionObserver((entradas) => {
 }, { rootMargin: '-50% 0px -50% 0px', threshold: 0 });
 document.querySelectorAll('.escena').forEach((s) => ioEscena.observe(s));
 
-requestAnimationFrame(() => { document.body.classList.add('listo'); trazarHilo(); });
+/* ================================================================ ENTRADA */
+const entrada = $('#entrada'), principal = $('#principal');
+principal.inert = true;
+document.body.classList.add('cerrado');
+$('#entrar').focus({ preventScroll: true });
+$('#entrar').addEventListener('click', () => {
+  sonarAhora(); // dentro del mismo toque, para que el navegador permita el sonido
+  entrada.classList.add('saliendo');
+  principal.inert = false;
+  document.body.classList.remove('cerrado');
+  document.body.classList.add('listo');
+  if ($('#rep-alterno').hidden) $('#mini').hidden = false;
+  setTimeout(() => { entrada.hidden = true; }, reducido.matches ? 0 : 1400);
+  $('#titulo').setAttribute('tabindex', '-1');
+  $('#titulo').focus({ preventScroll: true });
+  trazarHilo();
+});
+requestAnimationFrame(trazarHilo);
 window.addEventListener('load', trazarHilo);
 document.fonts?.ready.then(trazarHilo);
 document.querySelectorAll('.editorial img, .protagonista img').forEach((img) => img.addEventListener('load', trazarHilo, { once: true }));

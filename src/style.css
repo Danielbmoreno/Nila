@@ -72,6 +72,34 @@ h2 { font: 300 clamp(1.9rem, 4.2vw, 3rem)/1.15 var(--serif); color: var(--estela
 .revela { opacity: 0; transform: translateY(26px); transition: opacity 1.4s var(--ease), transform 1.4s var(--ease); transition-delay: calc(var(--i, 0) * 120ms); }
 .revela.visible { opacity: 1; transform: none; }
 
+/* ------------------------------------------------------------- entrada */
+body.cerrado { overflow: hidden; }
+.entrada {
+  position: fixed; inset: 0; z-index: 50; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; padding: var(--gutter); text-align: center;
+  background: radial-gradient(ellipse 80% 50% at 50% 100%, rgba(238, 143, 176, 0.25), transparent 70%), rgba(10, 10, 40, 0.86);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  transition: opacity 1.4s var(--ease), visibility 1.4s;
+}
+.entrada.saliendo { opacity: 0; visibility: hidden; }
+.entrada-kicker { margin: 0; font: 400 0.78rem/1 var(--sans); letter-spacing: 0.4em; color: var(--dorado); }
+.entrada-texto { margin: 0; font: italic 300 clamp(1.7rem, 5vw, 2.6rem)/1.3 var(--serif); color: var(--estelar); text-shadow: 0 0 30px rgba(244, 185, 204, 0.4); }
+.entrada .boton { min-width: 160px; margin-top: 8px; }
+.entrada-nota { margin: 0; font-size: 0.75rem; letter-spacing: 0.2em; color: var(--tenue); }
+
+.mini {
+  position: fixed; z-index: 20; left: clamp(12px, 2vw, 24px); bottom: clamp(12px, 2vw, 24px);
+  display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 10px 16px; border-radius: 999px;
+  border: 1px solid rgba(242, 215, 162, 0.35); background: rgba(10, 10, 40, 0.6); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  color: var(--estelar); font: 400 0.8rem/1 var(--serif); font-style: italic; cursor: pointer;
+}
+.mini[hidden] { display: none; }
+.mini-ondas { display: flex; gap: 3px; align-items: flex-end; height: 12px; color: var(--rosa); }
+.mini-ondas i { width: 2px; height: 30%; background: currentColor; border-radius: 1px; }
+.mini.sonando .mini-ondas i { animation: onda 1.1s ease-in-out infinite; }
+.mini-ondas i:nth-child(2) { animation-delay: 0.2s !important; } .mini-ondas i:nth-child(3) { animation-delay: 0.4s !important; }
+@keyframes onda { 0%, 100% { height: 25%; } 50% { height: 100%; } }
+.titulo:focus { outline: none; }
+
 /* ------------------------------------------------------------- portada */
 .portada {
   min-height: 100vh; min-height: 100svh; padding-bottom: 0;
@@ -213,10 +241,10 @@ h2 { font: 300 clamp(1.9rem, 4.2vw, 3rem)/1.15 var(--serif); color: var(--estela
 .rep-alterno { color: var(--rosa); font-size: 0.85rem; }
 
 /* -------------------------------------------------------------- mundos */
-.guinos { list-style: none; padding: 0; margin: 0 auto; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(28px, 4vw, 56px); max-width: 1080px; }
+.guinos { list-style: none; padding: 0; margin: 0 auto; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(28px, 5vw, 72px); max-width: 960px; }
 .guino { text-align: center; }
 .g-marca { display: block; height: 2.6rem; font: 400 clamp(1.6rem, 2.6vw, 2.1rem)/1.3 var(--mincho); color: var(--dorado); opacity: 0.85; text-shadow: 0 0 20px rgba(242, 215, 162, 0.35); }
-.g-3 .g-marca { font: 500 0.8rem/2.6rem var(--sans); letter-spacing: 0.4em; color: #9cc6ff; text-shadow: 0 0 14px rgba(110, 170, 255, 0.8); }
+.g-marca[lang='ko'] { font: 400 clamp(1.15rem, 2vw, 1.5rem)/2.6rem var(--sans); letter-spacing: 0.08em; }
 .g-texto { margin: 14px 0 12px; font: italic 300 clamp(1.15rem, 1.6vw, 1.35rem)/1.45 var(--serif); color: var(--estelar); }
 .g-obra { margin: 0; font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--tenue); }
 .g-0 .g-texto { color: var(--rosa); }
@@ -272,7 +300,6 @@ h2 { font: 300 clamp(1.9rem, 4.2vw, 3rem)/1.15 var(--serif); color: var(--estela
 @media (max-width: 900px) {
   .reproductor { grid-template-columns: minmax(0, 1fr); }
   .rep-halo { width: min(56vw, 230px); }
-  .guinos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 640px) {
   .editorial { grid-template-columns: repeat(2, minmax(0, 1fr)); }

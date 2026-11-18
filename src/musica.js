@@ -12,12 +12,14 @@ const mmss = (s) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart
 const uri = (c) => `spotify:track:${c.spotify}`;
 const enlace = (c) => `https://open.spotify.com/track/${c.spotify}`;
 
-let control = null, actual = 0, pausado = true, arrastrando = false, iniciado = false;
+let control = null, listo = false, actual = 0, pausado = true, arrastrando = false, iniciado = false;
+let quiereSonar = false, cercaDelFinal = false;
 
 const ui = {};
 
 function pintarPista() {
   const c = canciones[actual];
+  if (ui.miniTitulo) ui.miniTitulo.textContent = c.titulo;
   ui.titulo.textContent = c.titulo;
   ui.jp.textContent = c.jp;
   ui.detalle.textContent = c.detalle;
@@ -36,9 +38,20 @@ function fallar() {
   if (!ui.play.disabled) return; // ya está funcionando
   estado('No se pudo cargar el reproductor de Spotify.');
   ui.play.disabled = true;
+  ui.mini.hidden = true;
   ui.alterno.hidden = false;
   ui.alterno.innerHTML = 'Puedes escucharlas directamente en Spotify: ' +
     canciones.map((c) => `<a href="${enlace(c)}" target="_blank" rel="noopener">${c.titulo}</a>`).join(' · ');
+}
+
+// Bucle: al terminar una canción empieza la otra, y así sin parar.
+function siguiente() {
+  actual = (actual + 1) % canciones.length;
+  pintarPista();
+  reiniciarProgreso();
+  control.loadUri(uri(canciones[actual]));
+  control.play();
+  estado('Cargando…');
 }
 
 function alActualizar({ data }) {
@@ -46,6 +59,8 @@ function alActualizar({ data }) {
   pausado = data.isPaused;
   const dur = Math.round((data.duration || 0) / 1000);
   const pos = Math.min(dur, Math.round((data.position || 0) / 1000));
+  if (dur > 0 && !data.isPaused && pos >= dur - 2) cercaDelFinal = true;
+  if (cercaDelFinal && data.isPaused) { cercaDelFinal = false; siguiente(); return; }
   if (dur > 0) {
     ui.rango.disabled = false;
     ui.rango.max = dur;
@@ -61,6 +76,8 @@ function alActualizar({ data }) {
   ui.raiz.classList.toggle('sonando', sonando);
   ui.play.classList.toggle('en-pausa', !pausado);
   ui.play.setAttribute('aria-label', pausado ? 'Reproducir' : 'Pausar');
+  ui.mini.classList.toggle('sonando', sonando);
+  ui.mini.setAttribute('aria-label', `${pausado ? 'Reproducir' : 'Pausar'} música: ${canciones[actual].titulo}`);
   estado(data.isBuffering ? 'Cargando…' : pausado ? (pos > 0 ? 'En pausa' : 'Lista para escuchar') : 'Sonando ahora');
 }
 
@@ -70,7 +87,11 @@ function crearControlador(IFrameAPI) {
     { uri: uri(canciones[actual]), width: '100%', height: 80 },
     (c) => {
       control = c;
-      c.addListener('ready', () => { ui.play.disabled = false; estado('Lista para escuchar'); });
+      c.addListener('ready', () => {
+        if (listo) return;
+        listo = true; ui.play.disabled = false; estado('Lista para escuchar');
+        if (quiereSonar) c.play();
+      });
       c.addListener('playback_update', alActualizar);
     }
   );
@@ -87,11 +108,19 @@ function cargarAPI() {
   setTimeout(fallar, 15000);
 }
 
+/* Se llama desde el toque en «Entrar»: los navegadores solo dejan sonar
+   música después de que la persona toca algo. */
+export function sonarAhora() {
+  quiereSonar = true;
+  if (control && listo) control.play();
+}
+
 export function iniciarMusica() {
   Object.assign(ui, {
     raiz: $('#reproductor'), estado: $('#rep-estado'), titulo: $('#rep-titulo'), jp: $('#rep-jp'),
     detalle: $('#rep-detalle'), play: $('#rep-play'), rango: $('#rep-progreso'), actual: $('#rep-actual'),
     total: $('#rep-total'), pistas: $('#rep-pistas'), embed: $('#spotify-embed'), alterno: $('#rep-alterno'),
+    mini: $('#mini'), miniTitulo: $('#mini-titulo'),
   });
 
   ui.pistas.innerHTML = canciones.map((c, i) =>
@@ -99,6 +128,7 @@ export function iniciarMusica() {
   pintarPista();
 
   ui.play.addEventListener('click', () => control?.togglePlay());
+  ui.mini.addEventListener('click', () => { if (control && listo) control.togglePlay(); else sonarAhora(); });
 
   ui.pistas.addEventListener('click', (e) => {
     const b = e.target.closest('[data-pista]');
@@ -121,7 +151,6 @@ export function iniciarMusica() {
   });
   ui.rango.addEventListener('change', () => { control?.seek(+ui.rango.value); arrastrando = false; });
 
-  // El reproductor de Spotify solo se carga cuando la escena se acerca.
-  const io = new IntersectionObserver((e) => { if (e.some((x) => x.isIntersecting)) { cargarAPI(); io.disconnect(); } }, { rootMargin: '600px 0px' });
-  io.observe(ui.raiz);
+  // Se carga desde el inicio para que esté lista cuando ella toque «Entrar».
+  cargarAPI();
 }

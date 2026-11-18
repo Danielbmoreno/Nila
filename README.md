@@ -7,11 +7,12 @@ https://danielbmoreno.github.io/Nila/
 
 La página es un solo cielo que cambia mientras ella baja: empieza en el atardecer, pasa por la noche y termina en el amanecer. Un hilo rojo trenzado, el *musubi* de Your Name, une toda la historia.
 
+0. **Entrada.** «Un pequeño universo, hecho para ti» y el botón **Entrar**. Ese toque es el que permite que la música empiece sola.
 1. **Portada.** «Stefi, qué bonito que existas», sobre un lago al atardecer con un cometa.
 2. **La hora mágica** (*kataware-doki*). Un texto propio inspirado en Your Name y el nudo donde nace el hilo rojo.
 3. **Fotografías.** Una foto protagonista y una galería editorial que se puede ampliar.
 4. **Música.** Dream Lantern y Sparkle de RADWIMPS, con el reproductor oficial de Spotify.
-5. **Los mundos que te gustan.** Guiños breves a Your Name, Mushoku Tensei, Nanatsu no Taizai y Solo Leveling.
+5. **Los mundos que te gustan.** Guiños breves a Your Name, Nanatsu no Taizai y el k-drama *Bon Appétit, Your Majesty* (폭군의 셰프).
 6. **Carta.** Atada con hilo rojo; se abre al tocarla.
 7. **Cierre.** «Por todas las historias bonitas que todavía te esperan», con estrellas fugaces y un deseo.
 
@@ -19,7 +20,7 @@ La página es un solo cielo que cambia mientras ella baja: empieza en el atardec
 
 Todo el texto está en **`src/contenido.js`**: portada, versos, canciones, guiños, carta y cierre.
 
-En la carta, escribe tu nombre en `carta.firma`.
+La carta está firmada en `carta.firma` (Dato).
 
 ## Fotografías
 
@@ -41,6 +42,8 @@ export const fotos = [
 `w` y `h` son el ancho y el alto de la versión de 1600. Mientras `fotos` esté vacía, la galería no aparece.
 
 ## Música
+
+La música empieza al tocar **Entrar** y alterna en bucle entre las dos canciones. Un control flotante, abajo a la izquierda, permite pausarla desde cualquier parte. Los navegadores no permiten sonido sin un primer toque; por eso existe la entrada.
 
 Las canciones se reproducen con el **reproductor oficial de Spotify** a través de su iFrame API. Todo lo que muestra la página (reproduciendo, en pausa, progreso y duración) viene de los eventos reales de Spotify. Este sitio no aloja ni copia audio.
 

@@ -31,7 +31,20 @@
     <canvas id="cielo-canvas" aria-hidden="true"></canvas>
     <svg id="hilo" aria-hidden="true" preserveAspectRatio="none"><path id="hilo-sombra" /><path id="hilo-path" /></svg>
 
-    <main>
+    <!-- ENTRADA: el toque en «Entrar» es lo que permite que la música suene -->
+    <div class="entrada" id="entrada">
+      <p class="entrada-kicker">18 · XI · 2026</p>
+      <p class="entrada-texto">Un pequeño universo,<br />hecho para ti.</p>
+      <button class="boton" id="entrar" type="button">Entrar</button>
+      <p class="entrada-nota">Con música · sube el volumen</p>
+    </div>
+
+    <button class="mini" id="mini" type="button" aria-label="Pausar música" hidden>
+      <span class="mini-ondas" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="mini-titulo" id="mini-titulo"></span>
+    </button>
+
+    <main id="principal">
       <!-- 1 · PORTADA -->
       <section id="portada" class="escena portada" aria-labelledby="titulo">
         <div class="portada-texto">
