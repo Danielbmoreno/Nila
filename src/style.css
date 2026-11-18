@@ -72,7 +72,7 @@ h3 { font-family: var(--serif); font-weight: 400; color: var(--estelar); }
 }
 .boton { background: linear-gradient(120deg, var(--rosa), var(--dorado)); color: var(--noche); font-weight: 500; box-shadow: 0 10px 40px -12px rgba(242, 184, 207, 0.6); }
 .boton:hover { transform: translateY(-2px); box-shadow: 0 16px 50px -12px rgba(242, 184, 207, 0.8); }
-.boton-fantasma { background: rgba(255, 255, 255, 0.03); color: var(--estelar); border-color: rgba(243, 217, 164, 0.35); backdrop-filter: blur(6px); }
+.boton-fantasma { background: rgba(255, 255, 255, 0.03); color: var(--estelar); border-color: rgba(243, 217, 164, 0.35); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
 .boton-fantasma:hover { border-color: var(--dorado); background: rgba(243, 217, 164, 0.08); }
 
 .etiqueta {
@@ -88,6 +88,7 @@ h3 { font-family: var(--serif); font-weight: 400; color: var(--estelar); }
 
 /* ------------------------------------------------------------- índice */
 .indice { position: fixed; right: clamp(10px, 2vw, 28px); top: 50%; transform: translateY(-50%); z-index: 10; display: flex; flex-direction: column; gap: 14px; }
+.indice a::before { content: ''; position: absolute; inset: -9px; } /* área táctil de 28px */
 .indice a { position: relative; width: 10px; height: 10px; border-radius: 50%; border: 1px solid rgba(243, 217, 164, 0.5); transition: background 0.4s, transform 0.4s; }
 .indice a[aria-current] { background: var(--dorado); transform: scale(1.25); box-shadow: 0 0 12px var(--dorado); }
 .indice a::after {
@@ -101,7 +102,7 @@ h3 { font-family: var(--serif); font-weight: 400; color: var(--estelar); }
   position: fixed; left: clamp(12px, 2vw, 28px); bottom: clamp(12px, 2vw, 28px); z-index: 10;
   display: flex; align-items: center; gap: 10px; padding: 10px 16px; border-radius: 999px;
   background: rgba(7, 11, 36, 0.55); border: 1px solid rgba(243, 217, 164, 0.3); color: var(--dorado);
-  font: 400 0.75rem/1 var(--sans); letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; backdrop-filter: blur(8px);
+  font: 400 0.75rem/1 var(--sans); letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
 }
 .ambiente-ondas { display: flex; gap: 3px; align-items: flex-end; height: 12px; }
 .ambiente-ondas i { width: 2px; height: 30%; background: currentColor; border-radius: 1px; }
@@ -157,6 +158,7 @@ h3 { font-family: var(--serif); font-weight: 400; color: var(--estelar); }
 .rueda-const { font: 400 9.5px var(--mincho); fill: var(--dorado); letter-spacing: 0.08em; opacity: 0.8; }
 .rueda-nombre { font: 400 8px var(--sans); fill: var(--estelar); opacity: 0; transition: opacity 0.4s; pointer-events: none; }
 .rueda-cuerpo { cursor: pointer; outline: none; }
+.rueda-cuerpo:focus-visible circle { stroke: var(--dorado); stroke-width: 2; }
 .rueda-cuerpo circle { transition: r 0.3s; }
 .rueda-cuerpo:hover .rueda-nombre, .rueda-cuerpo:focus-visible .rueda-nombre, .rueda-cuerpo.activo .rueda-nombre,
 #rueda [data-id='sol'] .rueda-nombre, #rueda [data-id='luna'] .rueda-nombre, #rueda [data-id='venus'] .rueda-nombre, #rueda [data-id='jupiter'] .rueda-nombre, #rueda [data-id='saturno'] .rueda-nombre { opacity: 0.9; }
@@ -259,11 +261,14 @@ h3 { font-family: var(--serif); font-weight: 400; color: var(--estelar); }
 .foto img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease), filter 0.6s; filter: saturate(0.92); }
 .foto button::after { content: ''; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 1px rgba(243, 217, 164, 0.18); background: linear-gradient(180deg, transparent 55%, rgba(7, 11, 36, 0.75)); pointer-events: none; }
 .foto button:hover img { transform: scale(1.04); filter: saturate(1.05); }
+.foto.rota button { background: linear-gradient(160deg, var(--profundo), var(--violeta)); }
+.foto.rota img { opacity: 0; }
+.foto.rota button::before { content: attr(data-falta); position: absolute; inset: 0; display: grid; place-items: center; padding: 16px; text-align: center; font-size: 0.8rem; color: var(--rosa); z-index: 1; }
 .foto figcaption { position: absolute; left: 0; right: 0; bottom: 0; z-index: 1; pointer-events: none; font: italic 300 clamp(0.9rem, 1.3vw, 1.05rem)/1.35 var(--serif); color: var(--estelar); padding: 12px 14px; text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6); }
 
 .visor { border: 0; padding: 0; background: transparent; max-width: 100vw; max-height: 100vh; width: 100vw; height: 100vh; color: var(--estelar); }
 .visor[open] { display: grid; place-items: center; }
-.visor::backdrop { background: rgba(4, 6, 20, 0.92); backdrop-filter: blur(6px); }
+.visor::backdrop { background: rgba(4, 6, 20, 0.92); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
 .visor figure { margin: 0; max-width: min(92vw, 1100px); text-align: center; }
 .visor img { max-height: 80vh; width: auto; margin: 0 auto; border-radius: 6px; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6); }
 .visor figcaption { font: italic 300 1.15rem var(--serif); margin-top: 14px; color: var(--texto); }
@@ -298,7 +303,7 @@ h3 { font-family: var(--serif); font-weight: 400; color: var(--estelar); }
 .carta {
   max-width: 680px !important; padding: clamp(32px, 6vw, 72px) clamp(22px, 6vw, 72px);
   background: linear-gradient(170deg, rgba(247, 245, 255, 0.07), rgba(247, 245, 255, 0.02));
-  border: 1px solid rgba(243, 217, 164, 0.2); border-radius: 4px; backdrop-filter: blur(4px);
+  border: 1px solid rgba(243, 217, 164, 0.2); border-radius: 4px; -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
   font: 400 clamp(1.15rem, 1.6vw, 1.32rem)/1.75 var(--serif); color: var(--estelar);
   position: relative;
 }
@@ -330,7 +335,7 @@ h3 { font-family: var(--serif); font-weight: 400; color: var(--estelar); }
   .cielo-grid, .reproductor { grid-template-columns: minmax(0, 1fr); }
   .hechos { grid-template-columns: minmax(0, 1fr); }
   .universos { grid-template-columns: minmax(0, 1fr); }
-  .disco { width: min(72vw, 320px); }
+  .disco { width: min(58vw, 260px); }
   .ecualizador { margin-inline: auto; }
 }
 @media (max-width: 600px) {

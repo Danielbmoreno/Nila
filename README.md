@@ -46,6 +46,12 @@ El workflow `.github/workflows/deploy.yml` compila y publica el sitio cada vez q
 
 `vite.config.js` usa `base: './'`, así que las rutas funcionan aunque el repositorio cambie de nombre.
 
+## Vista previa al compartir
+
+`public/og.jpg` es la imagen que aparece al enviar el enlace por WhatsApp u otras apps. Las etiquetas `og:url` y `og:image` de `index.html` apuntan a `https://danielbmoreno.github.io/Nila/`. Si el sitio se publica en otra dirección, cámbialas.
+
+Si una foto no aparece porque su nombre está mal escrito, la galería muestra «No se encontró fotos/…» en su lugar, para que se note el error.
+
 ## Privacidad
 
 `index.html` incluye `<meta name="robots" content="noindex, nofollow">` para que los buscadores no indexen el sitio. Si quieres que aparezca en Google, borra esa línea.

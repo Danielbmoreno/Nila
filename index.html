@@ -12,8 +12,14 @@
     <meta property="og:title" content="Stefi · 18" />
     <meta property="og:description" content="Un cielo entero para ti. Feliz cumpleaños." />
     <meta property="og:locale" content="es_CO" />
-    <meta name="twitter:card" content="summary" />
+    <!-- Vista previa al compartir el enlace (WhatsApp, etc.). Si la URL final es otra, cámbiala aquí. -->
+    <meta property="og:url" content="https://danielbmoreno.github.io/Nila/" />
+    <meta property="og:image" content="https://danielbmoreno.github.io/Nila/og.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -26,16 +32,16 @@
     <svg id="hilo" aria-hidden="true" preserveAspectRatio="none"><path id="hilo-path" /></svg>
 
     <nav class="indice" aria-label="Escenas">
-      <a href="#inicio" data-label="Inicio"></a>
-      <a href="#cielo" data-label="El cielo"></a>
-      <a href="#musica" data-label="Música"></a>
-      <a href="#galeria" data-label="Galería"></a>
-      <a href="#universos" data-label="Universos"></a>
-      <a href="#carta" data-label="Carta"></a>
-      <a href="#final" data-label="Final"></a>
+      <a href="#inicio" data-label="Inicio" aria-label="Inicio"></a>
+      <a href="#cielo" data-label="El cielo" aria-label="El cielo"></a>
+      <a href="#musica" data-label="Música" aria-label="Música"></a>
+      <a href="#galeria" data-label="Galería" aria-label="Galería"></a>
+      <a href="#universos" data-label="Universos" aria-label="Universos"></a>
+      <a href="#carta" data-label="Carta" aria-label="Carta"></a>
+      <a href="#final" data-label="Final" aria-label="Final"></a>
     </nav>
 
-    <button id="ambiente" class="ambiente" type="button" aria-pressed="false" title="Sonido ambiente (generado en el navegador)">
+    <button id="ambiente" class="ambiente" type="button" aria-pressed="false" aria-label="Sonido ambiente" title="Sonido ambiente original, generado en el navegador">
       <span class="ambiente-ondas" aria-hidden="true"><i></i><i></i><i></i></span>
       <span class="ambiente-txt">Ambiente</span>
     </button>
@@ -89,7 +95,7 @@
         <div class="hechos" id="hechos"></div>
 
         <p class="nota-fuentes revela">
-          <span class="etiqueta arte">Arte</span> Los colores del cielo, las montañas y las estrellas animadas son una interpretación artística.
+          <span class="etiqueta arte">Arte</span> Los colores del cielo, las montañas, las estrellas animadas y la orientación del dibujo de la Luna (su fase sí es real) son una interpretación artística.
           <span class="etiqueta dato">Dato</span> Fase lunar, posiciones, constelaciones y horarios: calculados con
           <a href="https://github.com/cosinekitty/astronomy" target="_blank" rel="noopener">Astronomy Engine</a>
           (validado contra JPL Horizons) para 5,13° N 74,16° W; constelaciones según los límites de la IAU. Leónidas 2008:
@@ -110,7 +116,7 @@
             <div class="ecualizador" id="ecualizador" aria-hidden="true"></div>
           </div>
           <div class="reproductor-info">
-            <p class="ahora">Escuchando ahora</p>
+            <p class="ahora">Canción elegida</p>
             <h3 id="pista-titulo"></h3>
             <p class="pista-jp" id="pista-jp"></p>
             <p class="pista-nota" id="pista-nota"></p>

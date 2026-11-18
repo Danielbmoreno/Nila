@@ -28,9 +28,12 @@ let W = 0, H = 0, DPR = 1, estrellas = [], meteoros = [], tasaMeteoros = 0.004, 
 
 function crearEstrellas() {
   DPR = Math.min(window.devicePixelRatio || 1, 2);
+  const mismoAncho = W === window.innerWidth && estrellas.length;
   W = window.innerWidth; H = window.innerHeight;
   canvas.width = W * DPR; canvas.height = H * DPR;
   ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  // En móvil la barra del navegador cambia la altura al hacer scroll: no regenerar el cielo.
+  if (mismoAncho) return;
   const n = Math.min(420, Math.round((W * H) / 3800));
   estrellas = Array.from({ length: n }, () => ({
     x: Math.random() * W,
@@ -194,6 +197,10 @@ function dibujarRueda() {
   svg.addEventListener('click', (e) => { const g = e.target.closest('[data-id]'); if (g) marcar(g.dataset.id); });
   svg.addEventListener('keydown', (e) => { const g = e.target.closest('[data-id]'); if (g && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); marcar(g.dataset.id); } });
   $('#cuerpos-lista').addEventListener('click', (e) => { const li = e.target.closest('[data-id]'); if (li) marcar(li.dataset.id); });
+  $('#cuerpos-lista').addEventListener('keydown', (e) => {
+    const li = e.target.closest('[data-id]');
+    if (li && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); marcar(li.dataset.id); }
+  });
 }
 
 function dibujarLuna() {
@@ -212,7 +219,7 @@ function dibujarLuna() {
 
 function listaCuerpos() {
   $('#cuerpos-lista').innerHTML = cuerpos.map((c) => `
-    <li data-id="${c.id}" tabindex="0">
+    <li data-id="${c.id}" tabindex="0" role="button" aria-label="${esc(c.nombre)}, en ${esc(c.constelacion)}${c.nota ? '. ' + esc(c.nota) : ''}">
       <span class="punto" style="--c:${c.color}"></span>
       <strong>${esc(c.nombre)}</strong>
       <span class="const">${esc(c.constelacion)}</span>
@@ -239,7 +246,6 @@ dibujarRueda(); dibujarLuna(); listaCuerpos(); lineaDelDia();
 /* ------------------------------------------------------------ MÚSICA */
 const enc = encodeURIComponent;
 let pistaActual = 0, sonando = false;
-const disco = $('#disco');
 $('#ecualizador').innerHTML = Array.from({ length: 24 }, (_, i) => `<i style="--d:${(i * 0.137) % 1}s;--h:${30 + ((i * 37) % 70)}%"></i>`).join('');
 $('#pistas').innerHTML = canciones.map((c, i) => `
   <li><button type="button" data-pista="${i}"><span class="n">${String(i + 1).padStart(2, '0')}</span><span class="t">${esc(c.titulo)}</span><span class="jp">${esc(c.jp)}</span></button></li>`).join('');
@@ -263,7 +269,6 @@ $('#pistas').addEventListener('click', (e) => {
 });
 // El disco gira cuando ella abre una canción en una plataforma (interacción explícita).
 ['#btn-spotify', '#btn-youtube', '#btn-apple'].forEach((s) => $(s).addEventListener('click', () => $('.reproductor').classList.add('sonando')));
-disco.addEventListener('click', () => $('.reproductor').classList.toggle('sonando'));
 
 /* ------------------------------------- SONIDO AMBIENTE (generado, opcional) */
 // Un pad suave sintetizado en el navegador. Solo arranca si se pulsa el botón.
@@ -320,6 +325,11 @@ grid.innerHTML = fotos.map((f, i) => `
     </button>
     ${f.texto ? `<figcaption>${esc(f.texto)}</figcaption>` : ''}
   </figure>`).join('');
+// Si una foto no existe (nombre mal escrito), se muestra un aviso en vez de una imagen rota.
+grid.querySelectorAll('img').forEach((img, i) => img.addEventListener('error', () => {
+  img.closest('.foto').classList.add('rota');
+  img.closest('button').dataset.falta = `No se encontró fotos/${fotos[i].archivo}`;
+}, { once: true }));
 const visor = $('#visor'); let fotoActual = 0;
 function mostrarFoto(i) {
   fotoActual = (i + fotos.length) % fotos.length;
@@ -399,7 +409,7 @@ const ioEscena = new IntersectionObserver((entradas) => {
     document.body.dataset.escena = id;
     tasaMeteoros = id === 'final' ? 0.05 : id === 'inicio' ? 0.012 : 0.004;
   });
-}, { threshold: 0.4 });
+}, { rootMargin: '-50% 0px -50% 0px', threshold: 0 }); // escena = la que cruza el centro de la pantalla
 document.querySelectorAll('.escena').forEach((s) => ioEscena.observe(s));
 
 requestAnimationFrame(() => { document.body.classList.add('listo'); trazarHilo(); });
