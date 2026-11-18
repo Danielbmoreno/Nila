@@ -82,7 +82,7 @@ export const carta = {
     'Feliz cumpleaños, mi amor. Gracias por existir y por dejarme quererte.',
   ],
   despedida: 'Con todo mi amor,',
-  firma: '', // ← escribe aquí tu nombre
+  firma: 'Datoy',
 };
 
 export const cierre = {
